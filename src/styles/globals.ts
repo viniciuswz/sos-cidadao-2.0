@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
+  :root {
+    font-size: 62.5%;
+  }
   * {
     margin:0;
     padding: 0;
@@ -10,7 +13,8 @@ export default createGlobalStyle`
   }
 
   body{
-    background-color: ${props => props.theme.colors.background};
-    color: ${props => props.theme.colors.text}
+    background-color: ${props => props.theme.colors.backgroundSecondary};
+    color: ${props => props.theme.colors.text};
+    font-size: 1.6rem
   }
 `;
