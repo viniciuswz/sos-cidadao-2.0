@@ -1,12 +1,35 @@
-import React from 'react';
+import React, {
+  InputHTMLAttributes,
+  useState,
+  useCallback,
+  useRef,
+} from 'react';
+import { IconBaseProps } from 'react-icons';
 
-import { Content } from './styles';
+import { Container } from './styles';
 
-const Input: React.FC = () => {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  name: string;
+  size: number;
+  icon: React.ComponentType<IconBaseProps>;
+}
+
+const Input: React.FC<InputProps> = ({ icon: Icon, name, size, ...rest }) => {
+  const [onFocused, setOnFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+
+  const handlerInputFocus = useCallback(() => {
+    return setOnFocused(true);
+  }, []);
+  const handlerInputBlur = useCallback(() => {
+    return setOnFocused(false);
+  }, []);
+
   return (
-    <Content>
-      <input type="text" placeholder="email" />
-    </Content>
+    <Container isFocused={onFocused}>
+      {Icon && <Icon size={size} />}
+      <input {...rest} onFocus={handlerInputFocus} onBlur={handlerInputBlur} />
+    </Container>
   );
 };
 

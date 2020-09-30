@@ -6,10 +6,17 @@ declare module 'styled-components' {
     colors: {
       primary: string;
       secondary: string;
+
       backgroundPrimary: string;
       backgroundSecondary: string;
+
       text: string;
       textBackground: string;
+
+      inputIcon: string;
+      inputBackground: string;
+
+      complementPrimary: string;
     };
   }
 }
