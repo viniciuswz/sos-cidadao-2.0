@@ -1,12 +1,14 @@
 import styled, { css } from 'styled-components';
 
-import { shade } from 'polished';
+import { shade, lighten } from 'polished';
 
 interface ContainerProps {
   isFocused: boolean;
+  isFilled: boolean;
+  isErrored: boolean;
 }
 
-const Container = styled.div<ContainerProps>`
+const ContainerInput = styled.div<ContainerProps>`
   background: ${props => props.theme.colors.inputBackground};
   display: flex;
   align-items: center;
@@ -19,9 +21,9 @@ const Container = styled.div<ContainerProps>`
     outline: 0;
     padding: 8px;
     color: ${props => shade(0.5, props.theme.colors.backgroundPrimary)};
-    width: 100%;
+    width: calc(100% - 40px);
     font-size: 1.4rem;
-    line-height: 21.2rem;
+    line-height: 2.1rem;
     &::placeholder {
       color: ${props => props.theme.colors.inputIcon};
     }
@@ -35,6 +37,34 @@ const Container = styled.div<ContainerProps>`
     margin-top: 8px;
   }
   ${props =>
+    props.isErrored &&
+    css`
+     border: 2px solid ${props.theme.colors.error}};
+     svg{
+       color: ${props.theme.colors.error}}
+     }
+  `}
+
+  ${props =>
+    props.isFilled &&
+    css`
+      border: 2px solid  ${props.theme.colors.inputBackground};
+      svg{
+          color: ${shade(0.3, props.theme.colors.inputIcon)}}
+      }
+      & + p{
+        display: none;
+      }
+
+      input{
+        & + svg{
+          display: none;
+        }
+      }
+
+  `}
+
+  ${props =>
     props.isFocused &&
     css`
       border: 2px solid ${shade(0.3, props.theme.colors.inputIcon)}};
@@ -44,4 +74,16 @@ const Container = styled.div<ContainerProps>`
     `}
 `;
 
-export { Container };
+const Container = styled.div`
+  p {
+    color: ${props => props.theme.colors.error};
+    font-size: 1.4rem;
+    line-height: 2.1rem;
+  }
+
+  & + div {
+    margin-top: 8px;
+  }
+`;
+
+export { ContainerInput, Container };

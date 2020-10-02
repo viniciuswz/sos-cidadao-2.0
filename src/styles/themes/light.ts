@@ -14,5 +14,7 @@ export default {
     inputBackground: '#E8EDFA',
 
     complementPrimary: '#E932C7',
+
+    error: '#FF2D2D',
   },
 };

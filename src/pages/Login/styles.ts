@@ -73,7 +73,7 @@ const FormContent = styled.div`
     h1 {
       margin-bottom: 30px;
     }
-    p {
+    p.forget-paragraph {
       font-size: 1.3rem;
       color: ${props => props.theme.colors.inputIcon};
       margin: 4px 0;

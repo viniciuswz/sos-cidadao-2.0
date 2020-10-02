@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/web';
+import * as Yup from 'yup';
 import { MdEmail } from 'react-icons/md';
 import { FaLock, FaFacebook } from 'react-icons/fa';
+
 import { Link } from 'react-router-dom';
 
+import getValidateErrors from '../../utils/getValidateErrors';
+
 import loginImageContent from '../../assets/images/login-image-content.svg';
+
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
 import {
   Container,
@@ -13,10 +22,32 @@ import {
   OrContent,
   LoginContent,
 } from './styles';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
 
 const Login: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+  async function handlerSubmit(data: any): Promise<any> {
+    try {
+      formRef.current?.setErrors({});
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .email('você precisa inserir um e-mail válido')
+          .required('O e-mail é obrigatório'),
+        password: Yup.string().min(
+          6,
+          'A senha precisa ter no minímo 6 caracteres',
+        ),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      console.log('tudo valido', data);
+    } catch (error) {
+      const errors = getValidateErrors(error);
+      formRef.current?.setErrors(errors);
+    }
+  }
   return (
     <>
       <Background>
@@ -36,14 +67,14 @@ const Login: React.FC = () => {
           </ImageContent>
           <LoginContent>
             <FormContent>
-              <form>
+              <Form ref={formRef} onSubmit={handlerSubmit}>
                 <h1>Login</h1>
                 <Input
-                  name="Email"
+                  name="email"
                   icon={MdEmail}
                   placeholder="E-mail"
                   size={21}
-                  type="email"
+                  type="text"
                 />
                 <Input
                   name="password"
@@ -52,9 +83,9 @@ const Login: React.FC = () => {
                   size={18}
                   type="password"
                 />
-                <p>Esqueceu a senha ?</p>
-                <Button>Entrar</Button>
-              </form>
+                <p className="forget-paragraph">Esqueceu a senha ?</p>
+                <Button type="submit">Entrar</Button>
+              </Form>
               <OrContent>
                 <div>
                   <span>ou</span>

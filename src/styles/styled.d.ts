@@ -17,6 +17,8 @@ declare module 'styled-components' {
       inputBackground: string;
 
       complementPrimary: string;
+
+      error: string;
     };
   }
 }

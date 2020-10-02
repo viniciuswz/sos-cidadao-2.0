@@ -14,6 +14,7 @@ const Container = styled.button`
   line-height: 2.1rem;
   font-weight: 500;
   border-radius: 8px;
+  cursor: pointer;
   &.facebook {
     background: #1877f2;
     color: #fff;
