@@ -1,5 +1,13 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { shade } from 'polished';
+
+interface ImageContentProps {
+  isSignUp: boolean;
+}
+
+interface FormContentProps {
+  isSignUp: boolean;
+}
 
 const Background = styled.div`
   background: ${props => props.theme.colors.secondary};
@@ -25,18 +33,60 @@ const Container = styled.div`
   width: 100%;
   overflow: hidden;
   display: flex;
+  position: relative;
 `;
 
-const ImageContent = styled.div`
+const ImageContent = styled.div<ImageContentProps>`
   width: 100%;
   height: 100%;
   max-width: 50%;
+  display: flex;
+  justify-content: space-between;
+  background: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.textBackground};
+  z-index: 2;
+  position: relative;
+  overflow: hidden;
+  left: 0%;
+  transition: left 0.5s;
+  ${props =>
+    props.isSignUp &&
+    css`
+      left: 50%;
+    `}
+
+  .overflow-effect {
+    position: relative;
+    right: 0%;
+    transition: right 0.5s;
+    width: 100%;
+    ${props =>
+      props.isSignUp &&
+      css`
+        right: 100%;
+      `}
+  }
+`;
+
+const ImageContentSignIn = styled.div<ImageContentProps>`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   background: ${props => props.theme.colors.primary};
   color: ${props => props.theme.colors.textBackground};
+  z-index: 2;
+  position: absolute;
+  right: 0%;
+  transition: right 0.5s;
+  ${props =>
+    props.isSignUp &&
+    css`
+      /* right: 100%; */
+    `}
+
   h2 {
     text-align: center;
     max-width: 320px;
@@ -58,7 +108,7 @@ const ImageContent = styled.div`
     justify-content: center;
     align-items: center;
     & + div {
-      img {
+      svg {
         width: 100%;
         position: relative;
         top: 6px;
@@ -67,27 +117,120 @@ const ImageContent = styled.div`
   }
 `;
 
-const FormContent = styled.div`
-  max-width: 290px;
-  form {
-    h1 {
-      margin-bottom: 30px;
+const ImageContentSignUp = styled.div<ImageContentProps>`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.textBackground};
+  z-index: 2;
+  position: absolute;
+  left: 100%;
+  transition: left 0.5s;
+  ${props =>
+    props.isSignUp &&
+    css`
+      /*left: 100%;*/
+    `}
+
+  h2 {
+    text-align: center;
+    max-width: 320px;
+    font-weight: bold;
+    font-size: 3.6rem;
+    line-height: 5.4rem;
+    margin-top: 48px;
+  }
+  p {
+    text-align: center;
+    max-width: 420px;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & + div {
+      svg {
+        width: 100%;
+        position: relative;
+        top: 6px;
+      }
     }
-    p.forget-paragraph {
-      font-size: 1.3rem;
-      color: ${props => props.theme.colors.inputIcon};
-      margin: 4px 0;
+  }
+`;
+
+const FormContent = styled.div<FormContentProps>`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  .overflow-effect {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    position: relative;
+    right: 0%;
+    transition: right 0.5s;
+    & > div {
+      background: ${props => props.theme.colors.backgroundPrimary};
+      /* position: absolute; */
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      form {
+        max-width: 290px;
+        width: 100%;
+      }
+
+      &:first-of-type {
+        position: relative;
+
+        left: 50%;
+        transition: left 0.5s;
+        ${props =>
+          props.isSignUp &&
+          css`
+            left: 0%;
+          `}
+      }
+      &:last-of-type {
+        position: relative;
+        z-index: 2;
+        transition: 0.5s;
+        right: 0%;
+        width: 100%;
+        overflow: hidden;
+        ${props =>
+          props.isSignUp &&
+          css`
+            width: 90%;
+            right: 10%;
+          `}
+      }
     }
   }
 `;
 
 const LoginContent = styled.div`
-  max-width: 602px;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 `;
 
 const OrContent = styled.div`
@@ -131,6 +274,7 @@ const OrContent = styled.div`
       margin-top: 70px;
       span {
         text-decoration: underline;
+        cursor: pointer;
       }
     }
   }
@@ -140,6 +284,8 @@ export {
   Container,
   Background,
   ImageContent,
+  ImageContentSignUp,
+  ImageContentSignIn,
   FormContent,
   OrContent,
   LoginContent,

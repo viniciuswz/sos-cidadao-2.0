@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
@@ -9,10 +9,11 @@ import { Link } from 'react-router-dom';
 
 import getValidateErrors from '../../utils/getValidateErrors';
 
-import loginImageContent from '../../assets/images/login-image-content.svg';
+import SignInImageContent from '../../assets/images/signin-image-content.png';
+import SignUpImageContent from '../../assets/images/signup-image-content.png';
 
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import SignInForm from '../../components/SignInForm';
+import SignUpForm from '../../components/SignUpForm';
 
 import {
   Container,
@@ -21,10 +22,13 @@ import {
   FormContent,
   OrContent,
   LoginContent,
+  ImageContentSignIn,
+  ImageContentSignUp,
 } from './styles';
 
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const [isSignUp, setIsSignUp] = useState(false);
   async function handlerSubmit(data: any): Promise<any> {
     try {
       formRef.current?.setErrors({});
@@ -48,65 +52,57 @@ const Login: React.FC = () => {
       formRef.current?.setErrors(errors);
     }
   }
+
+  const handlerSignUp = useCallback(() => {
+    const newvalue = !isSignUp;
+    console.log(newvalue);
+    setIsSignUp(newvalue);
+    console.log('jaca', isSignUp);
+    return isSignUp;
+  }, [isSignUp]);
   return (
     <>
       <Background>
+        <button type="button" onClick={handlerSignUp}>
+          Teste
+        </button>
         <Container>
-          <ImageContent>
-            <div>
-              <h2>Bem vindo de volta</h2>
-              <p>
-                Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan
-                disputationi eu sit. Vide electram sadipscing et per. Praesent
-                vel viverra nisi.
-              </p>
-            </div>
-            <div>
-              <img src={loginImageContent} alt="jaca" />
+          <ImageContent isSignUp={isSignUp}>
+            <div className="overflow-effect">
+              <ImageContentSignIn isSignUp={isSignUp}>
+                <div>
+                  <h2>Bem vindo de volt</h2>
+                  <p>
+                    Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan
+                    disputationi eu sit. Vide electram sadipscing et per.
+                    Praesent vel viverra nisi.
+                  </p>
+                </div>
+                <div>
+                  <img src={SignInImageContent} alt="asdasd" />
+                </div>
+              </ImageContentSignIn>
+              <ImageContentSignUp isSignUp={isSignUp}>
+                <div>
+                  <h2>cadastra ai meo</h2>
+                  <p>
+                    Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan
+                    disputationi eu sit. Vide electram sadipscing et per.
+                    Praesent vel viverra nisi.
+                  </p>
+                </div>
+                <div>
+                  <img src={SignUpImageContent} alt="asdasd" />
+                </div>
+              </ImageContentSignUp>
             </div>
           </ImageContent>
           <LoginContent>
-            <FormContent>
-              <Form ref={formRef} onSubmit={handlerSubmit}>
-                <h1>Login</h1>
-                <Input
-                  name="email"
-                  icon={MdEmail}
-                  placeholder="E-mail"
-                  size={21}
-                  type="text"
-                />
-                <Input
-                  name="password"
-                  icon={FaLock}
-                  placeholder="Senha"
-                  size={18}
-                  type="password"
-                />
-                <p className="forget-paragraph">Esqueceu a senha ?</p>
-                <Button type="submit">Entrar</Button>
-              </Form>
-              <OrContent>
-                <div>
-                  <span>ou</span>
-                </div>
-                <Button className="facebook">
-                  <FaFacebook />
-                  Login com o Facebook
-                </Button>
-                <p>
-                  Ao continuar você concorda com os&nbsp;
-                  <Link to="termos-de-servico">termos de serviço</Link>
-                  &nbsp;e&nbsp;a&nbsp;
-                  <Link to="politica-de-privadidade">
-                    politica de privacidade
-                  </Link>
-                </p>
-                <p>
-                  Não é um membro ?&nbsp;
-                  <span>Cadastre-se</span>
-                </p>
-              </OrContent>
+            <FormContent isSignUp={isSignUp}>
+              <div className="overflow-effect">
+                <SignUpForm signUpfunction={handlerSignUp} />
+                <SignInForm signInfunction={handlerSignUp} />
+              </div>
             </FormContent>
           </LoginContent>
         </Container>
