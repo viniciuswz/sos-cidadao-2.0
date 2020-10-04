@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { FaLock, FaIdCard } from 'react-icons/fa';
+import { FaLock, FaIdCard, FaFacebook } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 
 import { Form } from '@unform/web';
@@ -7,7 +7,7 @@ import { Form } from '@unform/web';
 import Button from '../Button';
 import Input from '../Input';
 
-import { Container } from './styled';
+import { Container, OrContent } from './styles';
 
 interface SignUpProps {
   signUpfunction: () => boolean;
@@ -21,6 +21,7 @@ const SignUpForm: React.FC<SignUpProps> = ({ signUpfunction }) => {
     <Container>
       <Form onSubmit={handlerOnSubmit} ref={formRef}>
         <h1>cadastre-se</h1>
+        <p>São poucos passos, é rápido, fácil e seguro</p>
         <Input
           name="email"
           icon={MdEmail}
@@ -36,20 +37,29 @@ const SignUpForm: React.FC<SignUpProps> = ({ signUpfunction }) => {
           type="text"
         />
         <Input
-          name="Lastname"
+          name="lastname"
           icon={FaIdCard}
-          placeholder="Nome"
+          placeholder="Sobrenome"
           size={20}
           type="text"
         />
-        <Button type="submit">Entrar</Button>
+        <Button type="submit">Cadastrar</Button>
       </Form>
-      <p>
-        já é um membro?&nbsp;
-        <span onClick={signUpfunction} aria-hidden="true">
-          Faça Login
-        </span>
-      </p>
+      <OrContent>
+        <div>
+          <span>ou</span>
+        </div>
+        <Button className="facebook">
+          <FaFacebook />
+          Cadastre-se com o Facebook
+        </Button>
+        <p>
+          já é um membro?&nbsp;
+          <span onClick={signUpfunction} aria-hidden="true">
+            Faça Login
+          </span>
+        </p>
+      </OrContent>
     </Container>
   );
 };

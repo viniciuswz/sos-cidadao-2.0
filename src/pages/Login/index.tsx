@@ -28,7 +28,7 @@ import {
 
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true);
   async function handlerSubmit(data: any): Promise<any> {
     try {
       formRef.current?.setErrors({});
@@ -63,9 +63,6 @@ const Login: React.FC = () => {
   return (
     <>
       <Background>
-        <button type="button" onClick={handlerSignUp}>
-          Teste
-        </button>
         <Container>
           <ImageContent isSignUp={isSignUp}>
             <div className="overflow-effect">
