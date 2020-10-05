@@ -1,8 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import { FaLock, FaIdCard, FaFacebook } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
+import getValidateErrors from '../../utils/getValidateErrors';
 
 import Button from '../Button';
 import Input from '../Input';
@@ -13,10 +16,43 @@ interface SignUpProps {
   signUpfunction: () => boolean;
 }
 const SignUpForm: React.FC<SignUpProps> = ({ signUpfunction }) => {
-  const formRef = useRef(null);
-  const handlerOnSubmit = useCallback(data => {
-    console.log(data);
-  }, []);
+  const formRef = useRef<FormHandles>(null);
+  function handlerFacebookSignup(): void {
+    console.log('jaca');
+    FB.login(
+      function (response) {
+        console.log(response);
+        if (response.status === 'connected') {
+          // Logged into your webpage and Facebook.
+        } else {
+          // The person is not logged into your webpage or we are unable to tell.
+        }
+      },
+      { scope: 'public_profile,email,user_birthday,user_location' },
+    );
+  }
+  async function handlerOnSubmit(data: any): Promise<any> {
+    try {
+      formRef.current?.setErrors({});
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .email('O e-mail precisa ser válido')
+          .required('O e-mail é obrigatório'),
+        name: Yup.string().required('O nome é obrigatório'),
+        lastname: Yup.string().required('O sobrenome é obrigatório'),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      console.log('deu certo', data);
+    } catch (error) {
+      const errors = getValidateErrors(error);
+      formRef.current?.setErrors(errors);
+      // console.log(error);
+    }
+  }
   return (
     <Container>
       <Form onSubmit={handlerOnSubmit} ref={formRef}>
@@ -49,7 +85,7 @@ const SignUpForm: React.FC<SignUpProps> = ({ signUpfunction }) => {
         <div>
           <span>ou</span>
         </div>
-        <Button className="facebook">
+        <Button onClick={handlerFacebookSignup} className="facebook">
           <FaFacebook />
           Cadastre-se com o Facebook
         </Button>
