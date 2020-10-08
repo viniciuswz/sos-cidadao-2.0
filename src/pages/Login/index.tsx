@@ -28,7 +28,7 @@ import {
 
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   async function handlerSubmit(data: any): Promise<any> {
     try {
       formRef.current?.setErrors({});

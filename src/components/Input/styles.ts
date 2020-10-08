@@ -75,6 +75,7 @@ const ContainerInput = styled.div<ContainerProps>`
 `;
 
 const Container = styled.div`
+  width: 100%;
   p {
     color: ${props => props.theme.colors.error};
     font-size: 1.4rem;
